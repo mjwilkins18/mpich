@@ -6,6 +6,7 @@
 #include "mpiimpl.h"
 #include "coll_impl.h"
 #include "csel_container.h"
+
 #include "mpl.h"
 
 static void parse_container_params(struct json_object *obj, MPII_Csel_container_s * cnt)
@@ -228,7 +229,8 @@ static void parse_container_params(struct json_object *obj, MPII_Csel_container_
                 }
             }
             break;
-        
+
+        #ifdef ENABLE_CCLCOMM
         case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Allreduce_intra_ccl:
             {
                 json_object_object_foreach(obj, key, val) {
@@ -239,6 +241,7 @@ static void parse_container_params(struct json_object *obj, MPII_Csel_container_
                 }
             }
             break;
+        #endif /* ENABLE_CCLCOM */
 
         case MPII_CSEL_CONTAINER_TYPE__ALGORITHM__MPIR_Ibcast_intra_tsp_scatterv_recexch_allgatherv:
             {
