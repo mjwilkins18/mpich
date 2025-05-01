@@ -172,6 +172,7 @@ struct MPIR_Comm {
 
     /* -- extended features -- */
     struct MPIR_Threadcomm *threadcomm; /* Not NULL only if it's associated with a threadcomm */
+    struct MPIR_CCLcomm *cclcomm; /* Not NULL only if CCL subcommunication is enabled */
 
     enum { MPIR_STREAM_COMM_NONE, MPIR_STREAM_COMM_SINGLE, MPIR_STREAM_COMM_MULTIPLEX }
         stream_comm_type;
