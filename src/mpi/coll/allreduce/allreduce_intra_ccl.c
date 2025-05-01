@@ -20,7 +20,14 @@ int MPIR_Allreduce_intra_ccl(const void *sendbuf, void *recvbuf, MPI_Aint count,
             if (MPIR_NCCL_check_requirements_red_op(sendbuf, recvbuf, datatype, op)) {
                 return MPIR_NCCL_Allreduce(sendbuf, recvbuf, count, datatype, op, comm_ptr, errflag);
             }
-        #endif
+        #endif /* ENABLE_NCCL */
+        #ifdef ENABLE_ONECCL
+        case MPIR_CVAR_ALLREDUCE_CCL_auto: // Not sure yet how to handle "auto"
+        case MPIR_CVAR_ALLREDUCE_CCL_oneccl:
+            if (MPIR_OneCCL_check_requirements_red_op(sendbuf, recvbuf, datatype, op)) {
+                return MPIR_OneCCL_Allreduce(sendbuf, recvbuf, count, datatype, op, comm_ptr, errflag);
+            }
+        #endif /* ENABLE_ONECCL */
         default:
             goto fallback;
     }

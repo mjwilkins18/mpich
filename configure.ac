@@ -3922,7 +3922,7 @@ if test -z "$NVCC" ; then
 fi
 
 # CCLs
-have_ccl=no
+have_ccl=yes
 
 if test $GPU_SUPPORT = "CUDA" ; then
     PAC_CHECK_HEADER_LIB_OPTIONAL([nccl], [nccl.h], [nccl], [ncclCommInitAll])

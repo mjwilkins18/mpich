@@ -17,9 +17,14 @@ int MPIR_CCLcomm_init(MPIR_Comm * comm)
     cclcomm->comm = comm;
     comm->cclcomm = cclcomm;
 
+    /* Initialize the comm pointers to 0 */
     #ifdef ENABLE_NCCL
-    cclcomm->ncclcomm = 0; // Initialize the ncclcomm to 0
+    cclcomm->ncclcomm = 0; 
     #endif /*ENABLE_NCCL */
+
+    #ifdef ENABLE_ONECCL
+    cclcomm->onecclcomm = 0;
+    #endif
 
 fn_exit:
     return mpi_errno;
@@ -36,6 +41,15 @@ int MPIR_CCLcomm_free(MPIR_Comm *comm_ptr)
     #ifdef ENABLE_NCCL
     if(comm_ptr->cclcomm->ncclcomm) {  
         mpi_errno =  MPIR_NCCLcomm_free(comm_ptr);
+        if (mpi_errno != MPL_SUCCESS) {
+            goto fn_fail;
+        }
+    }
+    #endif
+
+    #ifdef ENABLE_ONECCL
+    if(comm_ptr->cclcomm->ncclcomm) {  
+        mpi_errno =  MPIR_OneCCLcomm_free(comm_ptr);
         if (mpi_errno != MPL_SUCCESS) {
             goto fn_fail;
         }
